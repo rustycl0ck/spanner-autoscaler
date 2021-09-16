@@ -12,7 +12,8 @@ namespace: spanner-autoscaler
 #commonLabels:
 #  someName: someValue
 
-bases:
+resources:
+- Kptfile
 - ../crd
 - ../rbac
 - ../manager
