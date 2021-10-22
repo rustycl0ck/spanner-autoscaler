@@ -21,18 +21,6 @@ When CPU utilization gets high, we can [reduce CPU utilization by increasing com
 
 Spanner Autoscaler is created to reconcile Cloud Spanner compute capacity like [Horizontal Pod Autoscaler](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/) by configuring `minNodes`, `maxNodes`, and `targetCPUUtilization`.
 
-![spanner autoscaler overview diagram](./docs/assets/overview.jpg)
-
-When CPU Utilization(High Priority) is above `targetCPUUtilization`, Spanner Autoscaler calculates desired compute capacity and increase compute capacity.
-
-![spanner cpu utilization](./docs/assets/cpu_utilization.png)
-
-![spanner scale up](./docs/assets/node_scaleup.png)
-
-After CPU Utilization gets low, Spanner Autoscaler *doesn't* decrease compute capacity immediately.
-
-![spanner scale down](./docs/assets/node_scaledown.png)
-
 Spanner Autoscaler has `Scale Down Interval`(default: 55min) and `Max Scale Down Nodes`(default: 2) to scale down compute capacity.
 The [pricing of Cloud Spanner](https://cloud.google.com/spanner/pricing) says any compute capacity that you provision will be billed for a minimum of one hour, so it keep compute capacity up around 1 hour.
 And if Spanner Autoscaler reduces a lot of compute capacity at once like 10000 PU -> 1000 PU, it will cause a latency increase. It reduces compute capacity with `maxScaleDownNodes`.
