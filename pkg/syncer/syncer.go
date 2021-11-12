@@ -18,7 +18,7 @@ import (
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/types"
-	"k8s.io/apimachinery/pkg/util/clock"
+	utilclock "k8s.io/apimachinery/pkg/util/clock"
 	"k8s.io/client-go/tools/record"
 	ctrlclient "sigs.k8s.io/controller-runtime/pkg/client"
 
@@ -102,15 +102,16 @@ func (c *Credentials) TokenSource(ctx context.Context) (oauth2.TokenSource, erro
 		}
 		return cred.TokenSource, nil
 	case CredentialsTypeImpersonation:
-		baseTs, err := initializedBaseTokenSource()
+		baseTS, err := initializedBaseTokenSource()
 		if err != nil {
 			return nil, err
 		}
 		ts, err := impersonate.CredentialsTokenSource(ctx, impersonate.CredentialsConfig{
 			TargetPrincipal: c.ImpersonateConfig.TargetServiceAccount,
 			Delegates:       c.ImpersonateConfig.Delegates,
-			Scopes:          []string{cloudPlatformScope}},
-			option.WithTokenSource(baseTs),
+			Scopes:          []string{cloudPlatformScope},
+		},
+			option.WithTokenSource(baseTS),
 		)
 		return ts, err
 	default:
@@ -133,7 +134,7 @@ type syncer struct {
 
 	stopCh chan struct{}
 
-	clock clock.Clock
+	clock utilclock.Clock
 	log   logr.Logger
 
 	recorder record.EventRecorder
@@ -155,7 +156,7 @@ func WithLog(log logr.Logger) Option {
 	}
 }
 
-func WithClock(clock clock.Clock) Option {
+func WithClock(clock utilclock.Clock) Option {
 	return func(s *syncer) {
 		s.clock = clock
 	}
@@ -207,7 +208,7 @@ func New(
 		interval:       time.Minute,
 		stopCh:         make(chan struct{}),
 		log:            zapr.NewLogger(zap.NewNop()),
-		clock:          clock.RealClock{},
+		clock:          utilclock.RealClock{},
 		recorder:       recorder,
 	}
 
