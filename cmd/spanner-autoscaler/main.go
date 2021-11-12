@@ -152,7 +152,7 @@ func run() error {
 		controllers.WithScaleDownInterval(*scaleDownInterval),
 	)
 
-	if err = r.SetupWithManager(mgr); err != nil {
+	if err := r.SetupWithManager(mgr); err != nil {
 		return err
 	}
 	// +kubebuilder:scaffold:builder

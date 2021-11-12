@@ -576,7 +576,7 @@ func Test_calcDesiredProcessingUnits(t *testing.T) {
 func TestNextValidProcessingUnits(t *testing.T) {
 	tests := []struct {
 		input int32
-	    want  int32
+		want  int32
 	}{
 		{input: 0, want: 100},
 		{input: 99, want: 100},
