@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"time"
 
-	// TODO: Lint suggests that this api is deprecated in favor of 'monitoring/v2', confirm and update
+	//nolint:gocritic // TODO: Lint suggests that this api is deprecated in favor of 'monitoring/v2', confirm and update
 	monitoring "cloud.google.com/go/monitoring/apiv3" // nolint:staticcheck
 	"github.com/go-logr/logr"
 	"github.com/go-logr/zapr"

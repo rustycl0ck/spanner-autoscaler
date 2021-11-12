@@ -34,9 +34,7 @@ type Syncer interface {
 	Start()
 	// Stop stops synchronization of resource status.
 	Stop()
-
 	UpdateTarget(projectID, instanceID string, credentials *Credentials) bool
-
 	UpdateInstance(ctx context.Context, desiredProcessingUnits int32) error
 }
 
